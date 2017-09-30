@@ -47,6 +47,7 @@
 #include "output.h"
 #include "neighbor.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 using namespace LAMMPS_NS;
@@ -1300,7 +1301,7 @@ void FixGCMC::attempt_molecule_insertion()
   MathExtra::quat_to_mat(quat,rotmat);
 
   double insertion_energy = 0.0;
-  bool procflag[natoms_per_molecule];
+  vector<bool> procflag(natoms_per_molecule);
 
   for (int i = 0; i < natoms_per_molecule; i++) {
     MathExtra::matvec(rotmat,onemols[imol]->x[i],atom_coord[i]);
@@ -1803,7 +1804,7 @@ void FixGCMC::attempt_molecule_rotation_full()
 
   double **x = atom->x;
   imageint *image = atom->image;
-  imageint image_orig[natoms_per_molecule];
+  vector<imageint> image_orig(natoms_per_molecule);
   int n = 0;
   for (int i = 0; i < atom->nlocal; i++) {
     if (mask[i] & molecule_group_bit) {
@@ -1866,8 +1867,8 @@ void FixGCMC::attempt_molecule_deletion_full()
   double energy_before = energy_stored;
 
   int m = 0;
-  double q_tmp[natoms_per_molecule];
-  int tmpmask[atom->nlocal];
+  vector<double> q_tmp(natoms_per_molecule);
+  vector<int> tmpmask(atom->nlocal);
   for (int i = 0; i < atom->nlocal; i++) {
     if (atom->molecule[i] == deletion_molecule) {
       tmpmask[i] = atom->mask[i];
@@ -2358,9 +2359,9 @@ void FixGCMC::update_gas_atoms_list()
       for (int i = 0; i < nlocal; i++) maxmol = MAX(maxmol,molecule[i]);
       tagint maxmol_all;
       MPI_Allreduce(&maxmol,&maxmol_all,1,MPI_LMP_TAGINT,MPI_MAX,world);
-      double comx[maxmol_all];
-      double comy[maxmol_all];
-      double comz[maxmol_all];
+      vector<double> comx(maxmol_all);
+      vector<double> comy(maxmol_all);
+      vector<double> comz(maxmol_all);
       for (int imolecule = 0; imolecule < maxmol_all; imolecule++) {
         for (int i = 0; i < nlocal; i++) {
           if (molecule[i] == imolecule) {

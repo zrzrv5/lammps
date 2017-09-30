@@ -310,7 +310,7 @@ double PairComb3::init_one(int i, int j)
 
 void PairComb3::read_lib()
 {
-  unsigned int maxlib = 1024;
+  const unsigned int maxlib = 1024;
   int i,j,k,l,nwords,m;
   int ii,jj,kk,ll,mm,iii;
   char s[maxlib];

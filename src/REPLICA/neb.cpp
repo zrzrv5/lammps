@@ -38,7 +38,9 @@
 #include "error.h"
 #include "force.h"
 #include "math_const.h"
+#include <vector>
 
+using namespace std;
 using namespace LAMMPS_NS;
 using namespace MathConst;
 
@@ -588,7 +590,7 @@ void NEB::print_status()
     MPI_Allgather(&fnorminf,1,MPI_DOUBLE,&fmaxatomInRepl[0],1,MPI_DOUBLE,roots);
   }
 
-  double one[numall];
+  vector<double> one(numall);
   one[0] = fneb->veng;
   one[1] = fneb->plen;
   one[2] = fneb->nlen;
@@ -602,7 +604,7 @@ void NEB::print_status()
 
   if (output->thermo->normflag) one[0] /= atom->natoms;
   if (me == 0)
-    MPI_Allgather(one,numall,MPI_DOUBLE,&all[0][0],numall,MPI_DOUBLE,roots);
+    MPI_Allgather(&one[0],numall,MPI_DOUBLE,&all[0][0],numall,MPI_DOUBLE,roots);
   MPI_Bcast(&all[0][0],numall*nreplica,MPI_DOUBLE,0,world);
 
   rdist[0] = 0.0;

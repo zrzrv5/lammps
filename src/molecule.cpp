@@ -24,7 +24,9 @@
 #include "math_const.h"
 #include "memory.h"
 #include "error.h"
+#include <vector>
 
+using namespace std;
 using namespace LAMMPS_NS;
 using namespace MathConst;
 
@@ -1111,7 +1113,7 @@ void Molecule::special_generate()
 {
   int newton_bond = force->newton_bond;
   tagint atom1,atom2;
-  int count[natoms];
+  vector<int> count(natoms);
 
   // temporary array for special atoms
 

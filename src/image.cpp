@@ -39,6 +39,9 @@
 #include "version.h"
 #endif
 
+#include <vector>
+
+using namespace std;
 using namespace LAMMPS_NS;
 using namespace MathConst;
 
@@ -1065,11 +1068,11 @@ void Image::write_PNG(FILE *fp)
   png_set_text(png_ptr,info_ptr,text_ptr,1);
   png_write_info(png_ptr,info_ptr);
 
-  png_bytep row_pointers[height];
+  vector<png_bytep> row_pointers(height);
   for (int i=0; i < height; ++i)
     row_pointers[i] = (png_bytep) &writeBuffer[(height-i-1)*3*width];
 
-  png_write_image(png_ptr, row_pointers);
+  png_write_image(png_ptr, &row_pointers[0]);
   png_write_end(png_ptr, info_ptr);
 
   png_destroy_write_struct(&png_ptr, &info_ptr);
