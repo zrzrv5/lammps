@@ -389,14 +389,17 @@ void WriteDataFile(char *nameroot)
 
   for(k=0; k < total_no_atoms; k++) {
     int typ = atoms[k].type;
-    fprintf(DatF," %6i %6i %3i %9.6f %15.9f %15.9f %15.9f",
+    fprintf(DatF," %6i %6i %3i %9.6f %15.9f %15.9f %15.9f %3i %3i %3i",
             k+1,
             atoms[k].molecule,
             typ+1,
             atoms[k].q,
             atoms[k].x[0],
             atoms[k].x[1],
-            atoms[k].x[2]);
+            atoms[k].x[2],
+            atoms[k].image[0],
+            atoms[k].image[1],
+            atoms[k].image[2]);
     if (hintflag) fprintf(DatF," # %s\n",atomtypes[typ].potential);
     else fputs("\n",DatF);
   }
