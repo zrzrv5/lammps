@@ -1,5 +1,5 @@
 
-TARGET	 = msi2lmp.exe
+TARGET	 = msi2lmp
 
 SRCS     = msi2lmp.c \
            ReadCarFile.c \
